@@ -42,6 +42,8 @@
         :numeroProyectos="numeroProyectos"
         :proyectos="proyectos"
         :cambiarEstado="cambiarEstado"
+        :limpiarData="limpiarData"
+        :borrarItem="borrarItem"
       />
     </div>
   </div>
@@ -65,7 +67,7 @@ export default {
         completado: false,
       };
       this.proyectos.push(proyecto);
-      localStorage.setItem("proyectos", JSON.stringify(this.proyectos));
+      this.saveData();
 
       this.proyecto = "";
       this.tipo = "";
@@ -74,6 +76,21 @@ export default {
     cambiarEstado(proyecto, campo) {
       // this.proyectos[id].urgente = !this.proyectos[id].urgente;
       proyecto[campo] = !proyecto[campo];
+      this.saveData();
+    },
+    saveData() {
+      localStorage.setItem("proyectos", JSON.stringify(this.proyectos));
+    },
+    limpiarData() {
+      this.proyectos = [];
+      localStorage.clear();
+    },
+    borrarItem(proyecto) {
+      console.log(proyecto);
+      this.proyectos = this.proyectos.filter(
+        (proy) => proy.proyecto != proyecto.proyecto
+      );
+      this.saveData();
     },
   },
   computed: {
